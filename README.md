@@ -67,6 +67,8 @@ airflow scheduler
 cd ../dbt_ecommerce
 dbt run
 ```
+<img width="1437" height="827" alt="Screenshot 2025-09-01 at 11 22 05 AM" src="https://github.com/user-attachments/assets/0c46d959-06a9-4037-b917-d17d1e2bf348" />
+
 
 ## 📊 Project Status
 
@@ -81,10 +83,3 @@ dbt run
 - **Real-time analytics** for business intelligence
 - **Automated data quality** checks
 
-## 👨‍💻 Author
-
-**Edward** - [GitHub Profile](https://github.com/edward179)
-
----
-
-⭐ **Star this repository if you find it helpful!**
