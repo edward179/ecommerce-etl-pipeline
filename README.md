@@ -48,8 +48,8 @@ ecommerce_project_ETL/
 ### Setup
 ```bash
 # Clone repository
-git clone https://github.com/edward179/ecommerce-ETL-pipeline.git
-cd ecommerce-ETL-pipeline
+git clone https://github.com/edward179/ecommerce-etl-pipeline.git
+cd ecommerce-etl-pipeline
 
 # Setup environment
 python -m venv airflow_venv
