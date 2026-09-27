@@ -1,22 +1,42 @@
 import os
-import yaml
-import snowflake.connector
 import sys
+from pathlib import Path
+
+import snowflake.connector
+
+try:
+    from dotenv import load_dotenv
+
+    # Project root .env (git-ignored). Real env vars set by Airflow/CI take precedence.
+    load_dotenv(Path(__file__).resolve().parents[3] / ".env", override=False)
+except ImportError:
+    pass
+
+REQUIRED = [
+    "SNOWFLAKE_ACCOUNT",
+    "SNOWFLAKE_USER",
+    "SNOWFLAKE_PASSWORD",
+    "SNOWFLAKE_ROLE",
+    "SNOWFLAKE_WAREHOUSE",
+    "SNOWFLAKE_DATABASE",
+    "SNOWFLAKE_SCHEMA",
+]
+
 
 def load_snowflake_config():
-    config_path = os.path.join(os.path.dirname(__file__), '../config/snowflake_config.yaml')
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config['snowflake']
+    missing = [k for k in REQUIRED if not os.getenv(k)]
+    if missing:
+        raise RuntimeError(f"Missing environment variables: {', '.join(missing)} (see .env.example)")
+    return {k.removeprefix("SNOWFLAKE_").lower(): os.environ[k] for k in REQUIRED}
+
 
 def main():
     print("✅ Running Snowflake delayed orders check...")
     print("✅ Python path:", sys.executable)
     print("✅ Snowflake connector version:", snowflake.connector.__version__)
 
-    sf_config = load_snowflake_config()
-
     try:
+        sf_config = load_snowflake_config()
         conn = snowflake.connector.connect(
             user=sf_config["user"],
             password=sf_config["password"],
@@ -33,8 +53,8 @@ def main():
 
         cur = conn.cursor()
         cur.execute("""
-            SELECT COUNT(*) 
-            FROM DBT_DB.DBT_SCHEMA.ORDERS_STATUS
+            SELECT COUNT(*)
+            FROM ORDERS_STATUS
             WHERE FINAL_STATUS = 'DELAYED'
         """)
         result = cur.fetchone()

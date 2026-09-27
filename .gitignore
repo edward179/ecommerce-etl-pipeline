@@ -1,0 +1,34 @@
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+**/config/snowflake_config.yaml
+profiles.yml
+*.pem
+*.p8
+
+# --- Airflow runtime (generated; contains keys / local state) ---
+airflow_project/airflow.cfg
+airflow_project/airflow.db
+airflow_project/*.generated
+airflow_project/logs/
+airflow_project/webserver_config.py
+airflow_project/standalone_admin_password.txt
+
+# --- dbt artifacts ---
+dbt_ecommerce/target/
+dbt_ecommerce/logs/
+dbt_ecommerce/dbt_packages/
+logs/
+**/logs/dbt.log
+
+# --- Python ---
+.venv/
+venv/
+airflow_venv*/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# --- OS ---
+.DS_Store
